@@ -1,0 +1,147 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<title>WebSocket Chat</title>
+<style>
+body {
+font-family: Arial, sans-serif;
+background-color: #f0f0f0;
+}
+
+
+#chat-log {
+width: 80%;
+margin: 20px auto;
+padding: 20px;
+border: 1px solid #ccc;
+border-radius: 10px;
+background-color: #fff;
+box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+
+#chat-log li {
+margin-bottom: 10px;
+padding: 10px;
+border-bottom: 1px solid #ccc;
+}
+
+
+#chat-log li:last-child {
+border-bottom: none;
+}
+
+
+#message {
+width: 60%;
+padding: 10px;
+font-size: 16px;
+border: 1px solid #ccc;
+border-radius: 10px;
+}
+
+
+#send {
+padding: 10px 20px;
+border: none;
+border-radius: 10px;
+background-color: #4CAF50;
+color: #fff;
+cursor: pointer;
+}
+
+
+#send:hover {
+background-color: #3e8e41;
+}
+
+
+.chat-message {
+padding: 10px;
+border-bottom: 1px solid #ccc;
+}
+
+
+.chat-message img {
+width: 20px;
+height: 20px;
+border-radius: 50%;
+margin-right: 10px;
+}
+
+
+.chat-message .username {
+font-weight: bold;
+color: #337ab7;
+}
+
+
+.chat-message .message-text {
+color: #666;
+}
+
+
+#messageDiv {
+display: flex;
+justify-content: center;
+}
+</style>
+</head>
+
+
+<body>
+<h1>WebSocket Chat</h1>
+
+
+<div id="chat-log"></div>
+<div id="messageDiv">
+<input id="message" type="text" placeholder="Type a message...">
+<button id="send">Send</button>
+</div>
+
+
+<script>
+const socket = new WebSocket("ws://localhost:8080");
+
+
+socket.onopen = () => {
+console.log("Connected to the WebSocket server");
+};
+
+
+socket.onmessage = (event) => {
+const message = event.data;
+if (message instanceof Blob) {
+handleBlobMessage(message);
+} else {
+console.log(`Received non-Blob message: ${message}`);
+}
+};
+
+
+async function handleBlobMessage(blob) {
+const messageString = await blob.text();
+console.log(`Received message => ${messageString}`);
+document.getElementById("chat-log").innerHTML += `<div>${messageString}</div>`;
+}
+socket.onerror = (event) => {
+console.log("Error occurred while communicating with the WebSocket server");
+};
+
+
+socket.onclose = () => {
+console.log("Disconnected from the WebSocket server");
+};
+
+
+document.getElementById("send").addEventListener("click", () => {
+const message = document.getElementById("message").value;
+if (message !== "") {
+socket.send(message);
+document.getElementById("message").value = "";
+}
+});
+</script>
+</body>
+</html>
