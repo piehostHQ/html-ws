@@ -22,7 +22,7 @@ A modern web browser
 
 Clone the repository
 
-git clone https://github.com/yourusername/websocket-chat.git
+git clone https://github.com/piehostHQ/html-ws.git
 cd websocket-chat
 
 ### Install dependencies
