@@ -21,10 +21,10 @@ A modern web browser
 ### Installation
 
 Clone the repository
-
+```bash
 git clone https://github.com/piehostHQ/html-ws.git
 cd websocket-chat
-
+```
 ### Install dependencies
 Navigate to the project directory and install the required Node.js modules:
 
@@ -37,9 +37,9 @@ Start the WebSocket Server
 Open a terminal in the project directory.
 
 Run the following command to start the WebSocket server:
-
+```
 node server.js
-
+```
 The WebSocket server will start on port 8080.
 
 Open the Client Interface
